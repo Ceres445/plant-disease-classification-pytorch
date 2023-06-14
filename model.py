@@ -9,7 +9,7 @@ import torch.optim as optim
 import torch.nn as nn
 
 from torch.utils.data import DataLoader
-from plant_disease_classification_pytorch import data_generator, constant
+from .plant_disease_classification_pytorch import data_generator, constant
 
 IMAGE_SIZE = 128
 BATCH_SIZE = 25
@@ -41,6 +41,17 @@ class PlantDiseaseModel(nn.Module):
         return x
 
     @staticmethod
+    def create_datasets():
+        train_dataset, validation_dataset = data_generator.read_datasets(
+            constant.TRAINING_SET_PATH, IMAGE_SIZE, constant.classes(), 0.2
+        )
+
+        return (
+            train_dataset,
+            validation_dataset,
+        )
+
+    @staticmethod
     def create_dataloaders():
         train_dataset, validation_dataset = data_generator.read_datasets(
             constant.TRAINING_SET_PATH, IMAGE_SIZE, constant.classes(), 0.2
@@ -61,6 +72,11 @@ class PlantDiseaseModel(nn.Module):
         # )
 
         return train_loader, valid_loader
+
+    @classmethod
+    def create_model(cls):
+        model = cls()
+        return model
 
     def train_model(self, epochs, train_loader):
         criterion = nn.CrossEntropyLoss()
