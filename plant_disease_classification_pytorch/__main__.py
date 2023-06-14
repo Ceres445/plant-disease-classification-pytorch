@@ -6,6 +6,8 @@ import argparse
 from plant_disease_classification_pytorch import trainer
 from plant_disease_classification_pytorch.classifier import Classifier
 
+
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
