@@ -23,7 +23,7 @@ valid_transform = transforms.Compose(
 )
 
 
-def load_train_data(train_path, image_size, classes, max=5):
+def load_train_data(train_path, image_size, classes, max=20):
     images = []
     labels = []
     img_names = []

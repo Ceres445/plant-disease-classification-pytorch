@@ -17,7 +17,8 @@ LEARNING_RATE = 0.001
 EPOCHS = 35
 
 # CPU or GPU
-DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+# DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+DEVICE = "cpu"
 
 
 class PlantDiseaseModel(nn.Module):
@@ -75,7 +76,7 @@ class PlantDiseaseModel(nn.Module):
 
     @classmethod
     def create_model(cls):
-        model = cls()
+        model = cls().to(DEVICE)
         return model
 
     def train_model(self, epochs, train_loader):
@@ -119,17 +120,12 @@ class PlantDiseaseModel(nn.Module):
                 _, predicted = torch.max(outputs.data, 0)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
-        for data, target in testloader:
-            data = data.to(DEVICE)
-            target = target.to(DEVICE)
 
-            output = self(data)
+                target = torch.max(labels, 1)[1]
+                loss = criterion(outputs, target)
 
-            target = torch.max(target, 1)[1]
-            loss = criterion(output, target)
-
-            # update average validation loss
-            valid_loss += loss.item() * data.size(0)
+                # update average validation loss
+                valid_loss += loss.item() * data.size(0)
 
         # calculate average losses
         valid_loss = valid_loss / len(testloader.sampler)

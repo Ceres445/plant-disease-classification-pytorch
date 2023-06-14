@@ -3,6 +3,7 @@
 import torch
 
 from torch.utils.data import Dataset
+import numpy as np
 
 
 class PlantDataset(Dataset):
@@ -24,6 +25,8 @@ class PlantDataset(Dataset):
 
         self.images = images
         self.labels = labels
+        self.targets = np.array([np.where(x == 1.0)[0][0] for x in labels])
+        # self.targets = labels
         self.img_names = img_names
         self.classes = classes
         self.transform = transform
