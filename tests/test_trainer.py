@@ -7,7 +7,6 @@ from plant_disease_classification_pytorch import trainer
 
 
 class TrainerTest(unittest.TestCase):
-
     image_size = 128
 
     def test_create_dataloaders(self):
